@@ -1,7 +1,8 @@
 import './style.css'
 import * as THREE from 'three'
 //call helper function
-import {addDefaultMeshes} from './addDefaultMeshes'
+import {addDefaultMeshes, addStandardMeshes} from './addDefaultMeshes'
+import { addLight } from './addLight';
 
 //referencing scene in THREE library (anything with THREE prefix is refering something in the THREE library)
 //THREE.Scene
@@ -28,7 +29,11 @@ const material = new THREE.MeshBasicMaterial({color: 0xff0000});
 // scene.add(mesh);
 
 //global function, curly brackets means object (currently empty)
+//container for meshes
 const meshes = {}
+
+//container for lights
+const lights = {}
 
 init();
 //all setup stuff goes here
@@ -41,27 +46,36 @@ function init(){
   //by defalt everything is at 0,0,0 so move your camera back by 5
   camera.position.z = 5;
 
+  //add a light to the scene (not needed for mesh basic!!)
+  lights.default = addLight()
+  scene.add(lights.default)
+
   //here we populat our meshes object/container
   //mesh.default = mesh i got back
   meshes.default = addDefaultMeshes();
   //move the cube
   meshes.default.position.x = 2;
 
-  //add a second cube
-  meshes.default2 = addDefaultMeshes();
-  meshes.default2.position.x = -2;
-
-  //add a third cube
-  meshes.default3 = addDefaultMeshes();
-  meshes.default3.position.y = 2;
+  //add standard material from external function
+  meshes.standard = addStandardMeshes()
+  meshes.standard.position.x = -2
 
   //add meshes to our screen
   scene.add(meshes.default);
-  scene.add(meshes.default2);
-  scene.add(meshes.default3);
+  scene.add(meshes.standard)
+  
   console.log(meshes)
 
+  resize()
   animate();
+}
+
+function resize(){
+  window.addEventListener('resize', ()=>{
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()
+  })
 }
 
 function animate(){
@@ -74,7 +88,7 @@ function animate(){
   //tell renderer to render whats in arguments (current scene and camera)
   renderer.render(scene, camera);
 
-  meshes.default.rotation.x += 0.05;
-  meshes.default2.rotation.y += 0.01;
-  meshes.default3.rotation.z += 0.07;
+  meshes.default.rotation.x += 0.01;
+  meshes.standard.rotation.y += 0.01
+
 }
