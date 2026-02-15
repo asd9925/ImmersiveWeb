@@ -13,7 +13,7 @@ export function addDefaultMeshes(){
 export function addStandardMeshes(){
     const geometry = new THREE.BoxGeometry(1,1,1)
     const material = new THREE.MeshStandardMaterial({
-        color: 0x00f00
+        color: 0x00f000
     })
 
     const mesh = new THREE.Mesh(geometry, material)
