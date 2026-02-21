@@ -3,6 +3,7 @@ import * as THREE from 'three'
 //call helper function
 import {addDefaultMeshes, addStandardMeshes} from './addDefaultMeshes'
 import { addLight } from './addLight';
+import Model from './model'
 
 //referencing scene in THREE library (anything with THREE prefix is refering something in the THREE library)
 //THREE.Scene
@@ -66,8 +67,22 @@ function init(){
   
   console.log(meshes)
 
+  instances()
   resize()
   animate();
+}
+
+function instances(){
+  const flower = new Model({
+    url: './bouquet.glb',
+    scene: scene,
+    meshes: meshes,
+    scale: new THREE.Vector3(2,2,2),
+    position: new THREE.Vector3(0, -0.8, 3),
+    replace: true,
+    // replaceURL: '/newmat/png',
+  })
+  flower.init()
 }
 
 function resize(){
